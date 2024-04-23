@@ -1,0 +1,67 @@
+--  AIM-120 AMRAAM Missile Control Main Program
+
+with Ada.Text_IO; use Ada.Text_IO;
+with Missile;
+with Guidance;
+
+procedure Main is
+   MissileState : Missile.State;
+   TargetAltitude : Missile.Altitude := 15000;
+   TargetVelocity : Missile.Velocity := 400;
+   TargetHeading : Missile.Angle := 90;
+   TargetDistance : Float := 10000.0; -- Distance to target in meters
+   TimeStep : Float := 0.1; -- Time step for simulation in seconds
+   TimeElapsed : Float := 0.0; -- Total time elapsed in simulation
+   EvadeTime : Float := 5.0; -- Time at which the target starts evasive maneuvers
+   TargetEvasionAngle : Float := 30.0; -- Maximum angle change during evasion in degrees
+   MaxTime : Float := 60.0; -- Maximum simulation time in seconds
+
+   procedure UpdateTarget(State : in out Missile.State; Time : Float) is
+   begin
+      if Time > EvadeTime then
+         --  Simulate evasive maneuvers by the target
+         TargetHeading := TargetHeading + (Random_Float * 2.0 - 1.0) * TargetEvasionAngle;
+      end if;
+      --  Update target position based on its velocity
+      TargetDistance := TargetDistance - TargetVelocity * TimeStep;
+   end UpdateTarget;
+
+begin
+   --  Initialize missile state
+   MissileState.Velocity := 0;
+   MissileState.Altitude := 10000;
+   MissileState.Heading := 0;
+
+   --  Initialize random number generator
+   Random_Init(Seed => Ada.Calendar.Clock);
+
+   --  Perform simulation
+   while TimeElapsed < MaxTime loop
+      --  Calculate trajectory to intercept the target
+      Guidance.CalculateTrajectory(MissileState, TargetAltitude, TargetVelocity, TargetHeading);
+
+      --  Update missile state based on guidance
+      Missile.UpdateState(MissileState, MissileState.Velocity, MissileState.Altitude, MissileState.Heading);
+
+      --  Update target position and behavior
+      UpdateTarget(MissileState, TimeElapsed);
+
+      --  Output current status
+      Put_Line("Time: " & Float'Image(TimeElapsed) & " seconds");
+      Put_Line("Missile Velocity: " & Velocity'Image(MissileState.Velocity) & " m/s");
+      Put_Line("Missile Altitude: " & Altitude'Image(MissileState.Altitude) & " m");
+      Put_Line("Missile Heading: " & Angle'Image(MissileState.Heading) & " degrees");
+      Put_Line("Target Distance: " & Float'Image(TargetDistance) & " m");
+      New_Line;
+
+      --  Introduce delay for simulation
+      delay 1.0; -- 1 second delay
+
+      --  Update elapsed time
+      TimeElapsed := TimeElapsed + TimeStep;
+   end loop;
+
+   --  Simulation finished
+   Put_Line("Simulation completed.");
+   Put_Line("Missile did not intercept the target within the given time.");
+end Main;

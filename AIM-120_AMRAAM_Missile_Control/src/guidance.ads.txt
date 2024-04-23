@@ -1,0 +1,11 @@
+--  AIM-120 AMRAAM Missile Guidance Package
+
+package Guidance is
+
+   --  Procedure declarations
+   procedure CalculateTrajectory(Missile : in out Missile.State;
+                                 TargetAltitude : Missile.Altitude;
+                                 TargetVelocity : Missile.Velocity;
+                                 TargetHeading : Missile.Angle);
+
+end Guidance;

@@ -1,0 +1,37 @@
+--  AIM-120 AMRAAM Missile Guidance Package Body
+
+package body Guidance is
+
+   procedure AcquireTarget(Missile : in out Missile.State) is
+   begin
+      --  Simulate target acquisition process
+      Put_Line("Acquiring target...");
+      delay 1.0; -- 1 second delay for simulation
+      Put_Line("Target acquired.");
+   end AcquireTarget;
+
+   procedure LockTarget(Missile : in out Missile.State) is
+   begin
+      --  Simulate target locking process
+      Put_Line("Locking target...");
+      delay 1.0; -- 1 second delay for simulation
+      Put_Line("Target locked.");
+   end LockTarget;
+
+   procedure NavigateToTarget(Missile : in out Missile.State) is
+   begin
+      --  Simulate navigation to target process
+      Put_Line("Navigating to target...");
+      delay 1.0; -- 1 second delay for simulation
+      Put_Line("Navigation complete.");
+   end NavigateToTarget;
+
+   procedure TriggerWarhead(Missile : in out Missile.State) is
+   begin
+      --  Simulate warhead triggering process
+      Put_Line("Triggering warhead...");
+      delay 1.0; -- 1 second delay for simulation
+      Put_Line("Warhead triggered. Target destroyed.");
+   end TriggerWarhead;
+
+end Guidance.

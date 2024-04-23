@@ -1,0 +1,37 @@
+--  AIM-120 AMRAAM Missile Control Package Body
+
+package body Missile is
+
+   procedure Fire(Missile : in out State) is
+   begin
+      --  Check missile status and perform firing sequence
+      if Missile.Velocity > 0 then
+         --  Missile is already in motion, perform guidance and target acquisition
+         Guidance.AcquireTarget(Missile);
+         Guidance.LockTarget(Missile);
+         Guidance.NavigateToTarget(Missile);
+         Guidance.TriggerWarhead(Missile);
+         Put_Line("Missile launched at target.");
+      else
+         Put_Line("Missile not in launch-ready state. Ignition sequence aborted.");
+      end if;
+   end Fire;
+
+   procedure UpdateState(Missile : in out State;
+                         NewVelocity : Velocity;
+                         NewAltitude : Altitude;
+                         NewHeading : Angle) is
+   begin
+      --  Code to update the state of the missile
+      Missile.Velocity := NewVelocity;
+      Missile.Altitude := NewAltitude;
+      Missile.Heading := NewHeading;
+
+      --  Check for fuel depletion or other failures
+      if Missile.Altitude = 0 then
+         Put_Line("Missile has crashed due to fuel depletion.");
+         --  Perform cleanup or initiate fail-safe procedures
+      end if;
+   end UpdateState;
+
+end Missile.

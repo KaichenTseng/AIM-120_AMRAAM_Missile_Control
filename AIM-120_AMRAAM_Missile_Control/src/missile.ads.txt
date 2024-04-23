@@ -1,0 +1,25 @@
+--  AIM-120 AMRAAM Missile Control Package
+
+package Missile is
+
+   --  Define types for various parameters
+   type Velocity is range 0 .. 500;  -- Velocity in meters per second
+   type Altitude is range 0 .. 20000;  -- Altitude in meters
+   type Angle is range -90 .. 90;  -- Angle in degrees
+
+   --  Define a record to hold the current state of the missile
+   type State is record
+      Velocity : Velocity;
+      Altitude : Altitude;
+      Heading  : Angle;
+      --  Add more parameters as needed
+   end record;
+
+   --  Procedure declarations
+   procedure Fire(Missile : in out State);
+   procedure UpdateState(Missile : in out State;
+                         NewVelocity : Velocity;
+                         NewAltitude : Altitude;
+                         NewHeading : Angle);
+
+end Missile;
